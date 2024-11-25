@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HR Schedule Organizer</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script> <!-- Library for Excel download -->
+    <style>
+        /* Styling */
+        * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 40px;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px 40px;
+            margin-bottom: 40px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #schedule, #gptResponse {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', Courier, monospace;
+            color: #555;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+       
+    </style>
+</head>
+<body>
+    <h1>Interview Scheduler</h1>
+    <div class="container">
+    <form id="scheduleForm">
+        <label for="startTime">Start Time:</label>
+        <input type="time" id="startTime" required><br><br>
+
+        <label for="endTime">End Time:</label>
+        <input type="time" id="endTime" required><br><br>
+
+        <label for="interviewDuration">Duration per Interview (minutes):</label>
+        <input type="number" id="interviewDuration" min="1" required><br><br>
+
+        <label for="breakDuration">Break Duration (minutes):</label>
+        <input type="number" id="breakDuration" min="0" required><br><br>
+
+        <label for="candidatesPerDay">Number of Interviews per Day:</label>
+        <input type="number" id="candidatesPerDay" min="1" required><br><br>
+
+        <label for="startDay">Start Day:</label>
+        <select id="startDay">
+            <option value="Sunday">Sunday</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+        </select><br><br>
+
+        <label for="weeks">Number of Weeks:</label>
+        <input type="number" id="weeks" min="1" required><br><br>
+
+        <label for="nameInput">Candidate Names and Phone Numbers (comma-separated):</label>
+        <textarea id="nameInput" required></textarea><br><br>
+
+        <button type="button" onclick="generateSchedule()">Generate Schedule</button>
+    </form>
+
+    <div id="output"></div>
+    <button id="downloadBtn" style="display: none;" onclick="downloadSchedule()">Download Schedule</button>
+</div>
+
+    <script>
+        let generatedSchedule = [];
+
+
+        function generateSchedule() {
+
+            const startTime = document.getElementById("startTime").value;
+            const endTime = document.getElementById("endTime").value;
+            const interviewDuration = parseInt(document.getElementById("interviewDuration").value);
+            const breakDuration = parseInt(document.getElementById("breakDuration").value);
+            const candidatesPerDay = parseInt(document.getElementById("candidatesPerDay").value);
+            const startDay = document.getElementById("startDay").value;
+            const weeks = parseInt(document.getElementById("weeks").value, 10);
+
+            const namesInput = document.getElementById("nameInput").value.split(",");
+            const candidates = namesInput.map(entry => {
+                const [name, phone] = entry.split(" - ");
+                return { name: name.trim(), phone: phone ? phone.trim() : "" };
+            });
+
+            fetch('/generate_schedule', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    startTime, endTime, interviewDuration, breakDuration,
+                    candidatesPerDay, startDay, weeks, candidates
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                generatedSchedule = data.schedule;
+                console.log(data.schedule);
+                document.getElementById("output").innerText = JSON.stringify(data.schedule, null, 2);
+                document.getElementById("downloadBtn").style.display = "block";
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function downloadSchedule() {
+            const worksheet = XLSX.utils.json_to_sheet(generatedSchedule);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Schedule");
+            XLSX.writeFile(workbook, "Interview_Schedule.xlsx");
+        }
+    </script>
+</body>
+</html>
