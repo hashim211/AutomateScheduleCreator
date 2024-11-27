@@ -15,3 +15,6 @@ This is the page looks like, you can select the following :
 -The name and phone of person("You can add phone number by putting - after the name i.e Hashim - 054000000").
 -Note that you can put multi names by putting the comma(,) and it will split names. i.e Hashim - 0555552, Ma -00.
 If no - is there the number will be null.
+--------------------------------------------------------------------------------------------------
+By clicking Generate Schedule button, You will get the result as JSON format and will be a button to download.
+![image](https://github.com/user-attachments/assets/8e25ab51-05f2-49f7-806d-1c201bf4663e)
