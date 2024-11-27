@@ -1,4 +1,4 @@
-Welcome to AutomateScheduleCreator project. The idea of this project is to create a schedule in the Excel filled automatically with this information : The day of the interview, which time interview will start,
+Welcome to AutomateScheduleCreator project. The idea of this project is to create an interview schedule in the Excel filled automatically with this information : The day of the interview, which time interview will start,
 duration of the interview, name and phone number of the person.
 I programed this idea using a simple web page to help me faciliate filling the information.
 I used Flask with HTML && JS.
@@ -17,4 +17,10 @@ This is the page looks like, you can select the following :
 If no - is there the number will be null.
 --------------------------------------------------------------------------------------------------
 By clicking Generate Schedule button, You will get the result as JSON format and will be a button to download.
-![image](https://github.com/user-attachments/assets/8e25ab51-05f2-49f7-806d-1c201bf4663e)
+![image](https://github.com/user-attachments/assets/13ce450a-1561-4eda-8f49-ba309474a4cb)
+--------------------------------------------------------------------------------------------------
+After you click download schedule you will get an excel file filled like this :
+![image](https://github.com/user-attachments/assets/0c601e37-4df5-4ee4-b4e4-54d788b705c2)
+--------------------------------------------------------------------------------------------------
+Conclusion
+This project is simple and useful when you want to autmate creating schedule like this instead of doing it manualy and it was great to try creating it with the help of chatgpt to create this project.
