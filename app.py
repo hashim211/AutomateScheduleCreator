@@ -34,7 +34,8 @@ def generate_schedule():
             while current_time < end_time_dt and candidate_index < len(candidates) and interviews_today < candidates_per_day:
                 schedule.append({
                     'Day': current_day.strftime('%A'),
-                    'Time': current_time.strftime('%H:%M'),
+                    'Interview start at': current_time.strftime('%H:%M %p'),
+                    'Duration of the interview in mins': interview_duration,
                     'Candidate': candidates[candidate_index]['name'],
                     'Phone': candidates[candidate_index]['phone']
                 })
@@ -42,8 +43,9 @@ def generate_schedule():
                 candidate_index += 1
                 interviews_today += 1
 
-                if interviews_today % 3 == 0 and break_duration > 0:
-                    current_time += datetime.timedelta(minutes=break_duration)
+                #if interviews_today % 3 == 0 and break_duration > 0:
+                #This line to put breaks between each Candidate
+                current_time += datetime.timedelta(minutes=break_duration)
 
             current_day += datetime.timedelta(days=1)
             current_time = datetime.datetime.strptime(start_time, '%H:%M')
