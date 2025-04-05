@@ -2,6 +2,10 @@ Welcome to AutomateScheduleCreator project. The idea of this project is to creat
 duration of the interview, name and phone number of the person.
 I programed this idea using a simple web page to help me faciliate filling the information.
 I used Flask with HTML && JS.
+--------------------------------------------------------------------------------------------------
+*Note : To run the app you need to run flask first.
+Write Flask run in the terminal to run locally.
+--------------------------------------------------------------------------------------------------
 
 ![image](https://github.com/user-attachments/assets/92355977-fe84-4063-99f0-d7c9e468df34)
 This is the page looks like, you can select the following :
